@@ -20,7 +20,7 @@ docker exec -i tz_pg psql -U postgres < timezone_areas-raw.sql
 docker exec -i tz_pg psql -U postgres -c "select * into timezone_areas from (select tzid, ST_Multi(ST_Subdivide(geom, 500)) as geom from timezone_areas_raw) t;"
 
 # export
-docker exec -i tz_pg pg_dump -U postgres --data-only --table timezone_areas --column-inserts > timezone_areas.sql
+docker exec -i tz_pg pg_dump -U postgres --data-only --table timezone_areas --column-inserts | grep '^INSERT INTO public.timezone_areas' > timezone_areas.sql
 
 # compress
 zstd -22 --ultra timezone_areas.sql
