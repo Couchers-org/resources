@@ -17,7 +17,7 @@ ogr2ogr -overwrite \
 docker exec -i tz_pg psql -U postgres < timezone_areas-raw.sql
 
 # do st_subdivide on it to make polygons faster for lookups
-docker exec -i tz_pg psql -U postgres -c "select * into timezone_areas from (select tzid, ST_Subdivide(geom, 500) as geom from timezone_areas_raw) t;"
+docker exec -i tz_pg psql -U postgres -c "select * into timezone_areas from (select tzid, ST_Multi(ST_Subdivide(geom, 500)) as geom from timezone_areas_raw) t;"
 
 # export
 docker exec -i tz_pg pg_dump -U postgres --data-only --table timezone_areas --column-inserts > timezone_areas.sql
