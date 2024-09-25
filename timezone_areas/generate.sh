@@ -1,8 +1,14 @@
+#!/bin/bash
+set -e
+
 # run postgis in docker while doing this:
 docker run -d --rm --name tz_pg -p 5433:5433 -e POSTGRES_PASSWORD=local -e PGPORT=5433 postgis/postgis
 
+echo "Waiting for postgis to prepare"
+sleep 10
+
 # pull the timezone areas from https://github.com/evansiroky/timezone-boundary-builder
-wget https://github.com/evansiroky/timezone-boundary-builder/releases/download/2020d/timezones-with-oceans.shapefile.zip
+wget https://github.com/evansiroky/timezone-boundary-builder/releases/download/2024b/timezones-with-oceans.shapefile.zip
 unzip timezones-with-oceans.shapefile.zip
 
 # convert to pg dump
